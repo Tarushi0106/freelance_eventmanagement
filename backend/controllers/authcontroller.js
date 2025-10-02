@@ -21,6 +21,7 @@ const registerUser = async (req, res) => {
             name,
             email,
             password: hashedPassword,
+             qrCode,
         });
 
         await newUser.save();
@@ -28,8 +29,9 @@ const registerUser = async (req, res) => {
           const qrData = `${newUser._id}`;
     const qrCode = await QRCode.toDataURL(qrData);
 
+    res.status(201).json({ message: "User registered successfully", qrCode });
+
     
-        res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
         console.error("Error registering user:", error);
         res.status(500).json({ message: "Error registering user" });
